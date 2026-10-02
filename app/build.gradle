@@ -10,8 +10,8 @@ defaultConfig {
     minSdk 24
     targetSdk 36
 
-    versionCode 3
-    versionName "2.1"
+    versionCode 4
+    versionName "2.2"
 }
 
 def ksFile = System.getenv("KEYSTORE_FILE")
@@ -36,4 +36,7 @@ buildTypes {
 }
 }
 
-dependencies { implementation 'androidx.appcompat:appcompat:1.7.0' implementation 'com.google.android.material:material:1.12.0' }
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
+}

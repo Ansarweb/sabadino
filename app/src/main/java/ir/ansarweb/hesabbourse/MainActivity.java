@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.GridLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -303,7 +304,7 @@ public class MainActivity extends Activity {
         EditText amount = numberField("مبلغ کل پرمیوم");
 
         TextView feeText = new TextView(this);
-        feeText.setText("کارمزد: 0 تومان");
+        feeText.setText("کارمزد: 0 ریال");
         feeText.setTextSize(16);
         feeText.setPadding(0, 15, 0, 15);
 
@@ -431,7 +432,7 @@ public class MainActivity extends Activity {
                         feeText.setText(
                                 "کارمزد: " +
                                 money(fee) +
-                                " تومان"
+                                " ریال"
                         );
                     }
 
@@ -642,9 +643,9 @@ public class MainActivity extends Activity {
                 action +
                 "\nمبلغ پرمیوم: " +
                 money(amount) +
-                " تومان\nکارمزد: " +
+                " ریال\nکارمزد: " +
                 money(fee) +
-                " تومان"
+                " ریال"
         );
 
         return true;
@@ -848,7 +849,7 @@ public class MainActivity extends Activity {
                             ? "🟢 سود تحقق‌یافته: "
                             : "🔴 زیان تحقق‌یافته: ") +
                     money(p.realizedProfit) +
-                    " تومان" +
+                    " ریال" +
                     "\nدرصد: " +
                     formatNumber(
                             p.realizedProfitPercent()
@@ -878,7 +879,7 @@ public class MainActivity extends Activity {
             total.setText(
                     "\nجمع سود/زیان تحقق‌یافته:\n" +
                     money(totalProfit) +
-                    " تومان"
+                    " ریال"
             );
 
             total.setTextSize(18);
@@ -937,7 +938,7 @@ public class MainActivity extends Activity {
                             ? "🟢 سود تحقق‌یافته: "
                             : "🔴 زیان تحقق‌یافته: ") +
                     money(p.realizedProfit) +
-                    " تومان" +
+                    " ریال" +
                     "\nدرصد: " +
                     formatNumber(
                             p.realizedProfitPercent()
@@ -967,7 +968,7 @@ public class MainActivity extends Activity {
             totalText.setText(
                     "\nجمع کل:\n" +
                     money(total) +
-                    " تومان"
+                    " ریال"
             );
 
             totalText.setTextSize(18);
@@ -1348,7 +1349,7 @@ public class MainActivity extends Activity {
                     label +
                     "\nمبلغ: " +
                     money(amount) +
-                    " تومان" +
+                    " ریال" +
                     "\nسبد: " +
                     safe(portfolio) +
                     "\nتاریخ: " +
@@ -1737,12 +1738,10 @@ public class MainActivity extends Activity {
     Map<String, PortfolioEngine.Position> positions =
             calculatePositions();
 
-    LinearLayout box =
-            new LinearLayout(this);
+    GridLayout box =
+            new GridLayout(this);
 
-    box.setOrientation(
-            LinearLayout.VERTICAL
-    );
+    box.setColumnCount(2);
 
     box.setPadding(
             20, 10, 20, 10
@@ -2067,7 +2066,22 @@ public class MainActivity extends Activity {
                             )
             );
 
-            box.addView(b);
+            GridLayout.LayoutParams params =
+                    new GridLayout.LayoutParams();
+
+            params.width = 0;
+            params.columnSpec =
+                    GridLayout.spec(
+                            GridLayout.UNDEFINED,
+                            1,
+                            1f
+                    );
+
+            params.setMargins(
+                    8, 8, 8, 8
+            );
+
+            box.addView(b, params);
         }
     }
 
@@ -2494,7 +2508,7 @@ public class MainActivity extends Activity {
                                     saveCurrentPrice(
                                             portfolioName,
                                             symbol,
-                                            lastPrice
+                                            closingPrice
                                     );
                                     saveYesterdayPrice(
         portfolioName,
@@ -2937,7 +2951,7 @@ box.addView(priceRow);
                     money(
                             position.averagePrice()
                     ) +
-                    " تومان"
+                    " ریال"
             );
 
             costText.setText(
@@ -2945,7 +2959,7 @@ box.addView(priceRow);
                     money(
                             position.cost
                     ) +
-                    " تومان"
+                    " ریال"
             );
 
             realizedText.setText(
@@ -2953,7 +2967,7 @@ box.addView(priceRow);
                     money(
                             position.realizedProfit
                     ) +
-                    " تومان"
+                    " ریال"
             );
 
         } else {
@@ -3008,7 +3022,7 @@ box.addView(priceRow);
             currentValueText.setText(
                     "ارزش فعلی: " +
                     money(value) +
-                    " تومان"
+                    " ریال"
             );
 
             pnlAmountText.setText(
@@ -3018,7 +3032,7 @@ box.addView(priceRow);
                     money(
                             Math.abs(pnl)
                     ) +
-                    " تومان"
+                    " ریال"
             );
 
             pnlPercentText.setText(
@@ -4667,7 +4681,7 @@ box.addView(priceRow);
                 .setTitle("💵 موجودی نقدی")
                 .setMessage(
                         money(balance) +
-                        " تومان"
+                        " ریال"
                 )
                 .setPositiveButton(
                         "باشه",

@@ -43,7 +43,7 @@
                 android:layout_weight="1"
                 android:padding="14dp"
                 android:background="#FFFFFF"
-                android:text="نقدینگی&#10;۰ تومان"
+                android:text="نقدینگی&#10;۰ ریال"
                 android:textSize="16sp"
                 android:textColor="#17212B"
                 android:gravity="right"/>
@@ -59,7 +59,7 @@
                 android:layout_weight="1"
                 android:padding="14dp"
                 android:background="#FFFFFF"
-                android:text="ارزش پرتفوی&#10;۰ تومان"
+                android:text="ارزش پرتفوی&#10;۰ ریال"
                 android:textSize="16sp"
                 android:textColor="#17212B"
                 android:gravity="right"/>
