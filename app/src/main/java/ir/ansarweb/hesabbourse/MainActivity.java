@@ -7,6 +7,9 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.graphics.Color;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -2044,9 +2047,45 @@ public class MainActivity extends Activity {
                 );
             }
 
-            b.setText(
-                    title.toString()
-            );
+            SpannableStringBuilder tileText =
+                    new SpannableStringBuilder(
+                            title.toString()
+                    );
+
+            int todayIndex =
+                    tileText.toString().indexOf(
+                            "امروز: "
+                    );
+
+            if (hasDailyPercent &&
+                    todayIndex >= 0) {
+
+                int percentStart =
+                        todayIndex + "امروز: ".length();
+
+                int percentEnd =
+                        tileText.toString().indexOf(
+                                "%",
+                                percentStart
+                        );
+
+                if (percentEnd >= 0) {
+
+                    int color =
+                            portfolioDailyPercent >= 0
+                                    ? Color.rgb(0, 150, 0)
+                                    : Color.rgb(210, 0, 0);
+
+                    tileText.setSpan(
+                            new ForegroundColorSpan(color),
+                            percentStart,
+                            percentEnd + 1,
+                            android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    );
+                }
+            }
+
+            b.setText(tileText);
 
             b.setTextSize(15);
 

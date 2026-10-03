@@ -430,6 +430,7 @@ public class TsetmcPriceService {
                         wantedSymbol
                 );
 
+        // تطبیق دقیق نماد معاملاتی
         for (int i = 0;
              i < array.length();
              i++) {
@@ -441,35 +442,30 @@ public class TsetmcPriceService {
                 continue;
             }
 
-            String symbol =
-                    item.optString(
-                            "lVal18AFC",
-                            ""
-                    );
-
-            String normalized =
-                    normalizeSymbol(symbol);
-
             String insCode =
                     item.optString(
                             "insCode",
                             ""
                     );
 
-            int flow =
-                    item.optInt(
-                            "flow",
-                            -1
+            if (insCode.isEmpty()) {
+                continue;
+            }
+
+            String symbol =
+                    normalizeSymbol(
+                            item.optString(
+                                    "lVal18AFC",
+                                    ""
+                            )
                     );
 
-            if (wanted.equals(normalized) &&
-                    !insCode.isEmpty() &&
-                    flow != 3) {
-
+            if (wanted.equals(symbol)) {
                 return insCode;
             }
         }
 
+        // تطبیق دقیق نام کامل
         for (int i = 0;
              i < array.length();
              i++) {
@@ -481,14 +477,40 @@ public class TsetmcPriceService {
                 continue;
             }
 
-            String symbol =
+            String insCode =
                     item.optString(
-                            "lVal18AFC",
+                            "insCode",
                             ""
                     );
 
-            String normalized =
-                    normalizeSymbol(symbol);
+            if (insCode.isEmpty()) {
+                continue;
+            }
+
+            String fullName =
+                    normalizeSymbol(
+                            item.optString(
+                                    "lVal30",
+                                    ""
+                            )
+                    );
+
+            if (wanted.equals(fullName)) {
+                return insCode;
+            }
+        }
+
+        // تطبیق جزئی
+        for (int i = 0;
+             i < array.length();
+             i++) {
+
+            JSONObject item =
+                    array.optJSONObject(i);
+
+            if (item == null) {
+                continue;
+            }
 
             String insCode =
                     item.optString(
@@ -496,8 +518,30 @@ public class TsetmcPriceService {
                             ""
                     );
 
-            if (wanted.equals(normalized) &&
-                    !insCode.isEmpty()) {
+            if (insCode.isEmpty()) {
+                continue;
+            }
+
+            String symbol =
+                    normalizeSymbol(
+                            item.optString(
+                                    "lVal18AFC",
+                                    ""
+                            )
+                    );
+
+            String fullName =
+                    normalizeSymbol(
+                            item.optString(
+                                    "lVal30",
+                                    ""
+                            )
+                    );
+
+            if ((!symbol.isEmpty() &&
+                    symbol.contains(wanted)) ||
+                (!fullName.isEmpty() &&
+                    fullName.contains(wanted))) {
 
                 return insCode;
             }
@@ -521,8 +565,14 @@ public class TsetmcPriceService {
                 .replace("ك", "ک")
                 .replace("ة", "ه")
                 .replace("ۀ", "ه")
+                .replace("ؤ", "و")
+                .replace("إ", "ا")
+                .replace("أ", "ا")
                 .replace("‌", "")
+                .replace("‍", "")
                 .replace(" ", "")
+                .replace("\t", "")
+                .replace("\n", "")
                 .toUpperCase();
     }
 
