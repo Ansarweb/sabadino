@@ -2046,7 +2046,19 @@ public class MainActivity extends Activity {
                         "\nامروز: —"
                 );
             }
+double portfolioRealizedProfit = 0;
 
+for (PortfolioEngine.Position p : positions.values()) {
+    if (p.isStock() &&
+            portfolio.equals(p.portfolio)) {
+
+        portfolioRealizedProfit += p.realizedProfit;
+    }
+}
+
+title.append("\nسود/زیان تحقق‌یافته: ");
+title.append(money(portfolioRealizedProfit));
+title.append(" ریال");
             SpannableStringBuilder tileText =
                     new SpannableStringBuilder(
                             title.toString()
@@ -2084,7 +2096,36 @@ public class MainActivity extends Activity {
                     );
                 }
             }
+int realizedLabelIndex =
+        tileText.toString().indexOf(
+                "سود/زیان تحقق‌یافته: "
+        );
 
+if (portfolioRealizedProfit < 0 &&
+        realizedLabelIndex >= 0) {
+
+    int realizedNumberStart =
+            realizedLabelIndex +
+            "سود/زیان تحقق‌یافته: ".length();
+
+    int realizedNumberEnd =
+            tileText.toString().indexOf(
+                    " ریال",
+                    realizedNumberStart
+            );
+
+    if (realizedNumberEnd > realizedNumberStart) {
+
+        tileText.setSpan(
+                new ForegroundColorSpan(
+                        Color.rgb(210, 0, 0)
+                ),
+                realizedNumberStart,
+                realizedNumberEnd,
+                android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+    }
+}
             b.setText(tileText);
 
             b.setTextSize(15);
